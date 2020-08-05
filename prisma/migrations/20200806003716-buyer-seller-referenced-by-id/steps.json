@@ -1,0 +1,85 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Transaction",
+      "field": "sellerId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Transaction",
+      "field": "buyerId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Transaction",
+      "field": "sellerEmail"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Transaction",
+      "field": "buyerEmail"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "buyer"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "newValue": "[buyerId]"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "buyer"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "newValue": "[id]"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "seller"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "newValue": "[sellerId]"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Transaction",
+          "field": "seller"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "newValue": "[id]"
+    }
+  ]
+}

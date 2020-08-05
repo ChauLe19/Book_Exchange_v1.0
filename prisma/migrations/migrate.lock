@@ -1,0 +1,5 @@
+# Prisma Migrate lockfile v1
+
+20200805235727-init
+20200806000631-fix-something
+20200806003716-buyer-seller-referenced-by-id

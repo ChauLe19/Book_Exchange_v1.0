@@ -1,0 +1,19 @@
+{
+  "name": "book_trader",
+  "version": "1.0.0",
+  "description": "This is a website to trade book",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon src/index.js"
+  },
+  "author": "Chau Le",
+  "license": "ISC",
+  "devDependencies": {
+    "@prisma/cli": "^2.3.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "graphql-yoga": "^1.18.3"
+  }
+}

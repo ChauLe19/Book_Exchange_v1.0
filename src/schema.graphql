@@ -1,0 +1,69 @@
+scalar DateTime
+input datetimeOrderBy {
+  date: Sort
+}
+
+enum Sort {
+  asc
+  desc
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  password: String!
+  ownBooks: [Book!]!
+  sellTransactions: [Transaction!]!
+  buyTransactions: [Transaction!]!
+}
+
+type Book {
+  id: ID!
+  dateCreated: DateTime!
+  dateForSale: DateTime
+  price: Float
+  forSale: Boolean
+  isbn: Float
+  ownedBy: User
+  transactions: [Transaction!]!
+}
+
+type Transaction {
+  id: ID!
+  date: DateTime!
+  product: Book!
+  seller: User!
+  buyer: User!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type Query {
+  # sellingBooks(isbn: Float): [Book!]!
+  searchForSaleBook(isbn: Float): [Book!]!
+  user(username: String): User!
+  myBookShelf: [Book!]! #My not for sale books
+  myStoreShelf: [Book!]! #My for sale books
+  books: [Book!]!
+  allTransactions:[Transaction!]!
+}
+
+type Mutation {
+  signup(email: String!, username: String!, password: String!): AuthPayload
+  login(email: String!, password: String): AuthPayload
+  createNewBook(isbn: Float!): Book!
+  sellExistBook(bookId: ID!, price: Float!): Book!
+  sellNewBook(isbn: Float!, price: Float!): Book!
+  buy(bookId: ID!): Transaction!
+  changePassword(password: String!, newPassword: String!): AuthPayload
+  updateUserInfo(username: String): User!
+}

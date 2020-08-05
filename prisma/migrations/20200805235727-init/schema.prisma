@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = "***"
+}
+
+model User {
+  id                                        Int           @default(autoincrement()) @id
+  email                                     String        @unique
+  username                                  String        @unique
+  password                                  String
+  ownBooks                                      Book[]
+  buyTransactions                         Transaction[] @relation("BuyTransaction")
+  sellTransactions                           Transaction[] @relation("SellTransaction")
+}
+
+model Book {
+  id          Int           @default(autoincrement()) @id
+  dateCreated DateTime      @default(now())
+  dateForSale  DateTime?
+  price       Float?
+  forSale     Boolean       @default(false)
+  isbn        Float
+  ownedById   Int
+  ownedBy        User          @relation(fields: [ownedById], references: [id])
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                                 Int      @default(autoincrement()) @id
+  date                               DateTime @default(now())
+  productId                          Int
+  price                              Float
+  sellerEmail                        String
+  buyerEmail                         String
+  User_Transaction_buyerEmailToUser  User     @relation("BuyTransaction", fields: [buyerEmail], references: [email])
+  Book                               Book     @relation(fields: [productId], references: [id])
+  User_Transaction_sellerEmailToUser User     @relation("SellTransaction", fields: [sellerEmail], references: [email])
+}
