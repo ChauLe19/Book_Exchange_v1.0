@@ -3,3 +3,7 @@
 20200805235727-init
 20200806000631-fix-something
 20200806003716-buyer-seller-referenced-by-id
+20200806020613
+20200806020633-add-title-field-to-book
+20200806022503-isbn-with-string-type-instead-of-float
+20200806143354-add-volume-id-gg

@@ -25,11 +25,13 @@ type User {
 
 type Book {
   id: ID!
+#   title: String!
+    volumeIdGG: String
   dateCreated: DateTime!
   dateForSale: DateTime
   price: Float
   forSale: Boolean
-  isbn: Float
+#   isbn: String
   ownedBy: User
   transactions: [Transaction!]!
 }
@@ -49,20 +51,26 @@ type AuthPayload {
 
 type Query {
   # sellingBooks(isbn: Float): [Book!]!
-  searchForSaleBook(isbn: Float): [Book!]!
+  searchForSaleBook(volumeIdGG: String): [Book!]!
   user(username: String): User!
   myBookShelf: [Book!]! #My not for sale books
   myStoreShelf: [Book!]! #My for sale books
-  books: [Book!]!
+  feed(take: Int,cursorId:Int): FeedConnection!
   allTransactions:[Transaction!]!
+}
+
+type FeedConnection{
+    cursorId:Int
+    results:[Book!]!
+    isNotEmpty:Boolean!
 }
 
 type Mutation {
   signup(email: String!, username: String!, password: String!): AuthPayload
   login(email: String!, password: String): AuthPayload
-  createNewBook(isbn: Float!): Book!
-  sellExistBook(bookId: ID!, price: Float!): Book!
-  sellNewBook(isbn: Float!, price: Float!): Book!
+  createNewBook(volumeIdGG: String!): Book!
+  sellExistBook(bookId: ID!, price: Float!): Book!  
+  sellNewBook(volumeIdGG: String!, price: Float!): Book!
   buy(bookId: ID!): Transaction!
   changePassword(password: String!, newPassword: String!): AuthPayload
   updateUserInfo(username: String): User!

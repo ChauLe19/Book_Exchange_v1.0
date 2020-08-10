@@ -19,11 +19,13 @@ model User {
 
 model Book {
   id          Int           @default(autoincrement()) @id
+//   title          String
+  volumeIdGG        String
   dateCreated DateTime      @default(now())
   dateForSale  DateTime?
   price       Float?
   forSale     Boolean       @default(false)
-  isbn        Float
+//   isbn        String
   ownedById   Int
   ownedBy        User          @relation(fields: [ownedById], references: [id])
   transactions Transaction[]

@@ -1,19 +1,52 @@
 {
   "name": "book_trader",
-  "version": "1.0.0",
-  "description": "This is a website to trade book",
-  "main": "index.js",
-  "scripts": {
-    "test": "nodemon src/index.js"
-  },
+  "version": "0.1.0",
+  "private": true,
   "author": "Chau Le",
   "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.1.2",
+    "@prisma/client": "^2.4.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "apollo-server": "^2.16.1",
+    "bcryptjs": "^2.4.3",
+    "cross-fetch": "^3.0.5",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1"
+  },
   "devDependencies": {
-    "@prisma/cli": "^2.3.0",
+    "@prisma/cli": "^2.4.1",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
   },
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "graphql-yoga": "^1.18.3"
+  "scripts": {
+    "server": "node server/server.js",
+    "client": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

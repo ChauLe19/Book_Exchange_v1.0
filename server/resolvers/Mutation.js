@@ -1,7 +1,14 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const fetch = require("node-fetch")
 const { APP_SECRET, getUserId } = require('../utils');
 
+async function isVolumeIdValid(volumeId){
+    return await fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
+        .then(res => {console.log(res); return res.json()})
+        .then(data => {if(data.error) throw data.error.message; return true})
+        .catch(err => {console.log(err); return false})
+}
 
 async function signup(root, args, context, info) {
     const password = await bcrypt.hash(args.password, 10)
@@ -33,10 +40,15 @@ async function login(root, args, context, info) {
 
 async function createNewBook(root, args, context, info) {
     const userId = getUserId(context)
+    const isIdValid = await isVolumeIdValid(args.volumeIdGG)
+    if(!isIdValid) throw new Error("Error has occured. This book doesn't exist.")
+    // console.log(title)
     return context.prisma.book.create({
         data: {
             // pictures
-            isbn: args.isbn,
+            // title,
+            // isbn: args.isbn,
+            volumeIdGG: args.volumeIdGG,
             ownedBy: { connect: { id: userId } }
         }
     });
@@ -59,13 +71,16 @@ async function sellExistBook(root, args, context, info) {
     });
 }
 async function sellNewBook(root, args, context, info) {
+    // const title = await getTitleFromISBN(args.isbn)
     const userId = getUserId(context)
     return context.prisma.book.create({
         data: {
             // pictures
-            isbn: args.isbn,
+            // title,
+            // isbn: args.isbn,
+            volumeIdGG:args.volumeIdGG,
             forSale: true,
-            price:args.price,
+            price: args.price,
             dateForSale: new Date(),
             ownedBy: { connect: { id: userId } }
         }
@@ -73,9 +88,9 @@ async function sellNewBook(root, args, context, info) {
 }
 async function buy(root, args, context, info) {
     const userId = getUserId(context);
-    const book = await context.prisma.book.findOne({ where: { id: parseInt(args.bookId) }, select: { forSale: true, ownedBy: true,price:true } });
+    const book = await context.prisma.book.findOne({ where: { id: parseInt(args.bookId) }, select: { forSale: true, ownedBy: true, price: true } });
     if (!book.forSale) throw new Error("This book is not for sale");
-    if (book.ownedBy.id===userId) throw new Error("Cannot buy your own book");
+    if (book.ownedBy.id === userId) throw new Error("Cannot buy your own book");
     await context.prisma.book.update({
         where: {
             id: parseInt(args.bookId)

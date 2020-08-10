@@ -10,11 +10,12 @@ async function user(root, args, context, info) {
     return context.prisma.user.findOne({ where: { id: getUserId(context) } });
 }
 async function searchForSaleBook(root, args, context, info) {
+    const where = {
+        forSale: true,
+        volumeIdGG: args.volumeIdGG
+    }
     return context.prisma.book.findMany({
-        where: {
-            forSale: true,
-            isbn: args.isbn
-        }
+        where
     });
 }
 
@@ -40,19 +41,35 @@ async function myStoreShelf(root, args, context, info) {
     });
 }
 
-// async function books(root,args,context,info){
-//     return context.prisma.book.findMany();
-// }
+async function feed(root, args, context, info) {
+    // const cursor = myCursor? 
+    // console.log(myCursor)
+    const result = await context.prisma.book.findMany({
+        take: (-args.take||-3),
+        skip:(args.cursorId?1:0),
+        cursor:(args.cursorId?{id:args.cursorId}:undefined),
+        where: {
+            forSale: true
+        }
+    });
+    const isNotEmpty = result.length!=0
+    return {
+        cursorId:isNotEmpty?result[0].id:args.cursorId,
+        isNotEmpty,
+        results:result.reverse()
+    };
+}
 
 // async function allTransactions(root, args,context,info){
-    //     return context.prisma.transaction.findMany()
-    // }
-    
-    module.exports = {
+//     return context.prisma.transaction.findMany()
+// }
+
+module.exports = {
     user,
     searchForSaleBook,
     myBookShelf,
-    myStoreShelf
+    myStoreShelf,
+    feed
 }
 
 // type Query{
