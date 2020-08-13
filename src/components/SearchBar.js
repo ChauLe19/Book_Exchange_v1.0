@@ -14,9 +14,8 @@ class SearchBar extends Component {
             <div>
                 <form id="search-form" action="/search" method="GET">
                     <select name="searchType">
-                        <option value="q">All</option>
-                        <option value="isbn">ISBN</option>
                         <option value="intitle">Title</option>
+                        <option value="isbn">ISBN</option>
                         <option value="inauthor">Author</option>
                         <option value="inpublisher">Publisher</option>
                     </select>

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const fetch = require("node-fetch")
 const { APP_SECRET, getUserId } = require('../utils');
+const { parse } = require('graphql');
 
 async function isVolumeIdValid(volumeId){
     return await fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
@@ -70,6 +71,23 @@ async function sellExistBook(root, args, context, info) {
         }
     });
 }
+async function unsell(root, args, context, info) {
+    const userId = getUserId(context);
+    const user = await context.prisma.user.findOne({ where: { id: userId }, select: { ownBooks: true } })
+    if (!user.ownBooks.find(book => book.id == args.bookId)) {
+        throw new Error("This user doesn't have this book")
+    }
+    return context.prisma.book.update({
+        where: {
+            id: parseInt(args.bookId)
+        },
+        data: {
+            forSale: false,
+            dateForSale: null,
+            price: null
+        }
+    });
+}
 async function sellNewBook(root, args, context, info) {
     // const title = await getTitleFromISBN(args.isbn)
     const userId = getUserId(context)
@@ -97,6 +115,7 @@ async function buy(root, args, context, info) {
         },
         data: {
             forSale: false,
+            price:null,
             ownedBy: { connect: { id: userId } },
         }
     })
@@ -110,6 +129,23 @@ async function buy(root, args, context, info) {
             buyer: { connect: { id: userId } }
         }
     })
+}
+async function deleteBook(root, args, context, info) {
+    const userId = getUserId(context);
+    const book = await context.prisma.book.findOne({ where: { id: parseInt(args.bookId) }, select: { forSale: true,id:true, ownedBy: true, price: true } });
+    if (book.ownedBy.id !== userId) throw new Error("Cannot delete your others' book");
+    const deletedBook =  context.prisma.book.update({
+        where:{
+            id:book.id
+        },
+        data:{
+            transactions:{
+                connect:[]
+            }
+        }
+    })
+
+    return context.prisma.book.delete({where:{id:parseInt(args.bookId)}})
 }
 
 async function changePassword(root, args, context, info) {
@@ -161,7 +197,9 @@ module.exports = {
     sellNewBook,
     buy,
     changePassword,
-    updateUserInfo
+    updateUserInfo,
+    unsell,
+    deleteBook
 }
 
 // type Mutation{

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './global.css';
 import {
     ApolloClient,
     InMemoryCache,
@@ -60,6 +61,7 @@ class App extends Component {
         this.setState({
             authToken:localStorage.getItem("token")
         })
+        window.location.reload()
     }
     render() {
 
@@ -83,7 +85,7 @@ class App extends Component {
                                 <Link to="/user/sell">Sell Book</Link>
                             </li>
                             <li>
-                                <Link to="/my">My Shelves</Link>
+                                <Link to="/my/book-shelf">My Shelves</Link>
                             </li>
                         </ul>
                     </div>
@@ -93,7 +95,7 @@ class App extends Component {
                             <h2>SearchPage</h2>
                             <SearchPage />
                         </Route>
-                        <Route path="/forSaleBooks/:bookId">
+                        <Route exact path="/forSaleBooks/:bookId">
                             <h2>Book Page</h2>
                             <BookPage />
                         </Route>
@@ -105,10 +107,10 @@ class App extends Component {
                             <h2>Book Info</h2>
                             <BookInfo />
                         </Route>
-                        <Route path="/login" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
-                        <Route path="/user/sell" render={()=><SellPage />}/>
-                        <Route path="/register" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
-                        <Route path="/" render={(props)=><Home history={props.history}/>}/>
+                        <Route exact path="/login" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
+                        <Route exact path="/user/sell" render={()=><SellPage />}/>
+                        <Route exact path="/register" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
+                        <Route exact path="/" render={(props)=><Home history={props.history}/>}/>
                     </Switch>
                 </ApolloProvider>
             </Router>

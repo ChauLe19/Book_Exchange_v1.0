@@ -11,7 +11,7 @@ import {
 
 import fetch from "node-fetch"
 import DBBookBox from "../components/DBBookBox"
-
+import { getAppropriateISBN } from "../fetchGGBooks"
 
 function SearchPage() {
     // const match = useRouteMatch();
@@ -21,10 +21,11 @@ function SearchPage() {
     const searchKey = query.get("search-key")
     const searchType = query.get("searchType")
     useEffect(() => {
-        console.log("https://www.googleapis.com/books/v1/volumes?q=" +searchType+":"+ searchKey)
+        // console.log("https://www.googleapis.com/books/v1/volumes?q=" +searchType+":"+ searchKey)
         fetch("https://www.googleapis.com/books/v1/volumes?q=" +searchType+":"+ searchKey)
             .then(res => res.json())
             .then(data => {
+                console.log(data.items)
                 return setItems(data.items)
             })
     }, [])
@@ -42,7 +43,7 @@ function SearchPage() {
                     imgHref={item.imageLinks ? item.imageLinks.thumbnail : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"}
                     author={item.authors}
                     publisher={item.publisher}
-                    isbn={item.industryIdentifiers? item.industryIdentifiers[0].identifier:""}
+                    isbn={getAppropriateISBN(item.industryIdentifiers)}
                     publishedDate={item.publishedDate}
                     volumeIdGG={id} />
             }):

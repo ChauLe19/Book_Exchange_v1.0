@@ -19,7 +19,8 @@ function SellPage() {
     const [isbn, setISBN] = useState("")
     const [price, setPrice] = useState("")
     const [message, setMessage] = useState("")
-
+    const [reload, setReload] = useState(false)
+    // if (reload) return (<Redirect to="/user/sell" />)
     return (
         <form>
             <label for="isbn">ISBN:</label>
@@ -38,8 +39,8 @@ function SellPage() {
                                 price: parseFloat(price)
                             }
                         })
-
                             .catch(err => setMessage("Please fill in every field"))
+                            window.location.reload()
                     })
                     .catch(err => setMessage("Invalid isbn"))
             }} value="Sell this book" />

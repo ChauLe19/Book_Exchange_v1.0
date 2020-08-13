@@ -2,3 +2,4 @@ node_modules
 prisma/migrations
 prisma/file.db
 .vscode
+cascading-deletes-demo

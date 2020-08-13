@@ -53,8 +53,8 @@ type Query {
   # sellingBooks(isbn: Float): [Book!]!
   searchForSaleBook(volumeIdGG: String): [Book!]!
   user(username: String): User!
-  myBookShelf: [Book!]! #My not for sale books
-  myStoreShelf: [Book!]! #My for sale books
+  myBookShelf(take:Int, cursorId:Int): FeedConnection! #My not for sale books
+  myStoreShelf(take:Int,cursorId:Int): FeedConnectioni! #My for sale books
   feed(take: Int,cursorId:Int): FeedConnection!
   allTransactions:[Transaction!]!
 }
@@ -74,4 +74,6 @@ type Mutation {
   buy(bookId: ID!): Transaction!
   changePassword(password: String!, newPassword: String!): AuthPayload
   updateUserInfo(username: String): User!
+  unsell(bookId:ID!): Book!
+  deleteBook(bookId:ID!): Book!
 }

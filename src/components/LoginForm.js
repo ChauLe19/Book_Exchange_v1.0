@@ -37,7 +37,6 @@ function LoginForm(props) {
     const [message, setMessage] = useState("")
     const [isLoggedin, setIsLoggedIn] = useState(localStorage.getItem("token"))
 
-    // console.log(props)
     if (isLoggedin) {
         return <Redirect to="/" />
     }
@@ -74,7 +73,6 @@ function LoginForm(props) {
                                         props.handleLogin()
                                     })
                                     .catch(err=>setMessage("Error has occured. Please check your email or password."))
-                                    // setIsLoggedIn(true)
 
                                 } : e => {
                                     e.preventDefault()
