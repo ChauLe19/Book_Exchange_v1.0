@@ -30,7 +30,7 @@ class FeedBox extends Component {
                 this.setState({
                     title,
                     subtitle,
-                    imgHref: imageLinks.thumbnail,
+                    imgHref: imageLinks ? imageLinks.thumbnail : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg",
                     isbn: getAppropriateISBN(industryIdentifiers)
                 })
             )
@@ -40,9 +40,14 @@ class FeedBox extends Component {
         // console.log(this.props)
         if (this.state.reloadFeed) return (<Redirect to="/my/book-shelf" />)
         return (
-            <div className="row" style={{ border: "2px black solid", margin: "10px" }}>
-                <div className="col-4 horizontal-center">
-                    <img src={this.state.imgHref} style={{ height: "100%" }} />
+            <div className="row" style={{ border: "2px black solid", margin: "10px 20px 10px 20px", }}>
+                <div className="col-4 horizontal-center" style={{
+                    backgroundImage: `url(${this.state.imgHref})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize:"contain",
+                    backgroundPosition:"center"
+                }}>
+
                 </div>
                 <div className="col-8">
 
@@ -50,7 +55,6 @@ class FeedBox extends Component {
                     <p>ISBN: {this.state.isbn}</p>
                     <p>Seller: {this.props.sellerUsername}</p>
                     <p>Date: {this.props.dateForSale}</p>
-                    <p>PRICE: ${this.props.price}</p>
                     <p style={{ color: "red" }}>{this.state.error}</p>
                     <button onClick={() => {
                         this.props.buyBook({
@@ -64,6 +68,8 @@ class FeedBox extends Component {
                         ).catch(err => this.setState({ error: err.toString() }))
                     }
                     }>Buy this book</button>
+                    <span style={{color:"green", fontSize:"1.5em"}}> ${this.props.price}</span>
+                    <p></p>
                 </div>
             </div>
         )

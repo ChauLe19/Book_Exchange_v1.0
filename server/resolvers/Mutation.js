@@ -6,7 +6,7 @@ const { parse } = require('graphql');
 
 async function isVolumeIdValid(volumeId){
     return await fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
-        .then(res => {console.log(res); return res.json()})
+        .then(res => res.json())
         .then(data => {if(data.error) throw data.error.message; return true})
         .catch(err => {console.log(err); return false})
 }

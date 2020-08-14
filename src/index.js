@@ -17,7 +17,7 @@ import LoginPage from "./pages/LoginPage"
 import Home from "./pages/Home"
 import BookPage from "./pages/BookPage"
 import SearchPage from "./pages/SearchPage"
-import SearchBar from "./components/SearchBar"
+import Header from "./components/Header"
 import SellPage from "./pages/SellPage"
 import MyShelves from "./pages/MyShelves"
 import {
@@ -68,27 +68,8 @@ class App extends Component {
         return (
             <Router>
                 <ApolloProvider client={client}>
-                    <div>
-                        <SearchBar />
-                        <ul>
-                            <li>
-                                <Link to="/">Home</Link>
-                            </li>
-                            {(!this.state.authToken && <li>
-                                <Link to="/login">Login</Link>
-                            </li>)||
-                                <li>
-                                    <Link to="#" onClick={e=>{localStorage.clear(); this.handleLogin()}}>Logout</Link>
-                                </li>
-                            }
-                            <li>
-                                <Link to="/user/sell">Sell Book</Link>
-                            </li>
-                            <li>
-                                <Link to="/my/book-shelf">My Shelves</Link>
-                            </li>
-                        </ul>
-                    </div>
+                    
+                    <Header isLogin={this.state.authToken} handleLogin={this.handleLogin}/>
                     <Switch>
 
                         <Route path="/search">

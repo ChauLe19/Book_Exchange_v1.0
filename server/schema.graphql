@@ -54,7 +54,7 @@ type Query {
   searchForSaleBook(volumeIdGG: String): [Book!]!
   user(username: String): User!
   myBookShelf(take:Int, cursorId:Int): FeedConnection! #My not for sale books
-  myStoreShelf(take:Int,cursorId:Int): FeedConnectioni! #My for sale books
+  myStoreShelf(take:Int,cursorId:Int): FeedConnection! #My for sale books
   feed(take: Int,cursorId:Int): FeedConnection!
   allTransactions:[Transaction!]!
 }

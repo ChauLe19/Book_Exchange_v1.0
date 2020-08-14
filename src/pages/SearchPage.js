@@ -32,6 +32,7 @@ function SearchPage() {
     
     return (
         <div>
+            <h3>You searched for {searchType}: {searchKey}</h3>
             {items? items.map(item => {
                 const id = item.id
                 item = item.volumeInfo;

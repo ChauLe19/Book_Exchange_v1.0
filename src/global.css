@@ -1,3 +1,28 @@
 .horizontal-center{
     text-align: center;
 }
+
+.header{
+    display: flex;
+    justify-content: space-around;
+}
+
+.header li{
+    display: inline;
+    margin:10px
+}
+
+.header form, .header ul{
+    display: inline;
+}
+.header{
+    background-color: darkblue;
+}
+
+a:hover, a:active, a{
+    text-decoration: none;
+}
+
+.header a{
+    color:white
+}

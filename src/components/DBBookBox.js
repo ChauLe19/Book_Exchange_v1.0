@@ -10,7 +10,13 @@ class DBBookBox extends Component {
     render() {
         return (
             <div style={{ border: "2px black solid" }}>
-                <img src={this.props.imgHref} width={"64"} height={"128"} />
+                <div style={{
+                    backgroundImage: `url(${this.props.imgHref})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize:"contain",
+                    backgroundPosition:"center",
+                    height:"200px"
+                }}></div>
                 <p>{this.props.title}</p>
                 <p>{this.props.subtitle}</p>
                 <p>Author: {(this.props.author||[]).join(", ")}</p>

@@ -11,18 +11,16 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <div>
-                <form id="search-form" action="/search" method="GET">
-                    <select name="searchType">
-                        <option value="intitle">Title</option>
-                        <option value="isbn">ISBN</option>
-                        <option value="inauthor">Author</option>
-                        <option value="inpublisher">Publisher</option>
-                    </select>
-                    <input className="search-bar" name="search-key" type="text" placeholder="Search for books" required />
-                    <input className="search-button" type="submit" form="search-form" value="&#128269;" />
-                </form>
-            </div>
+            <form id="search-form" action="/search" method="GET">
+                <select name="searchType">
+                    <option value="intitle">Title</option>
+                    <option value="isbn">ISBN</option>
+                    <option value="inauthor">Author</option>
+                    <option value="inpublisher">Publisher</option>
+                </select>
+                <input className="search-bar" name="search-key" type="text" placeholder="Search for books" required />
+                <input className="search-button" type="submit" form="search-form" value="&#128269;" />
+            </form>
         )
     }
 }

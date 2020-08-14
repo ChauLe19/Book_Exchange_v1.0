@@ -12,7 +12,7 @@ class BookshelfBox extends Component {
             title: "",
             isbn: "",
             price: "",
-            reload:false
+            reload: false
         }
     }
 
@@ -21,16 +21,25 @@ class BookshelfBox extends Component {
             .then(data => data.volumeInfo)
             .then(({ imageLinks, title, industryIdentifiers }) => this.setState({
                 title,
-                imgHref: imageLinks.thumbnail,
-                isbn:getAppropriateISBN(industryIdentifiers)
+                imgHref: imageLinks ? imageLinks.thumbnail : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg",
+                isbn: getAppropriateISBN(industryIdentifiers)
             }))
     }
 
     render() {
-        if(this.state.reload) return (<Redirect to={this.props.inBookshelf?"/my/book-shelf":"/my/store-shelf"}/>)
+        if (this.state.reload) return (<Redirect to={this.props.inBookshelf ? "/my/book-shelf" : "/my/store-shelf"} />)
         return (
-            <div style={{ border: "2px black solid" }}>
-                <img src={this.state.imgHref} />
+            <div className="col-4 horizontal-center" style={{}}>
+                <div style={{margin:"5px",border:"black 2px solid"}} >
+
+                <div className="horizontal-center" style={{
+                    height:"200px",
+                    backgroundImage: `url(${this.state.imgHref})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize:"contain",
+                    backgroundPosition:"center"
+                }}>
+                </div>
                 <p>{this.state.title}</p>
                 <p>isbn: {this.state.isbn}</p>
                 {this.props.inBookshelf || <p>Price: ${this.props.price}</p>}
@@ -43,8 +52,9 @@ class BookshelfBox extends Component {
                             bookId: this.props.bookId
                         }
                     })
-                    this.setState({reload:true})
+                    this.setState({ reload: true })
                 }}>{this.props.inBookshelf ? "Sell" : "Unsell"}</button>
+                </div>
             </div>
         )
     }
