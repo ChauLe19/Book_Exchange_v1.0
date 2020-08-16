@@ -55,7 +55,7 @@ class FeedBox extends Component {
                     <p>ISBN: {this.state.isbn}</p>
                     <p>Seller: {this.props.sellerUsername}</p>
                     <p>Date: {this.props.dateForSale}</p>
-                    <p style={{ color: "red" }}>{this.state.error}</p>
+                    <p className="error">{this.state.error}</p>
                     <button onClick={() => {
                         this.props.buyBook({
                             variables: {

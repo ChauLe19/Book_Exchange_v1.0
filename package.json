@@ -20,7 +20,6 @@
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-infinite-scroll-component": "^5.0.5",
     "react-infinite-scroller": "^1.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1"
@@ -28,7 +27,8 @@
   "devDependencies": {
     "@prisma/cli": "^2.4.1",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "xml-fetch": "^1.1.91"
   },
   "scripts": {
     "server": "node server/server.js",

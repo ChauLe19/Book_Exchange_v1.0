@@ -9,21 +9,24 @@ class DBBookBox extends Component {
 
     render() {
         return (
-            <div style={{ border: "2px black solid" }}>
+            <div className="col-3">
+                {/* <div style={{padding:"5px",border: "2px black solid", boxSizing:"border-box"}}> */}
+
                 <div style={{
                     backgroundImage: `url(${this.props.imgHref})`,
                     backgroundRepeat: "no-repeat",
-                    backgroundSize:"contain",
-                    backgroundPosition:"center",
-                    height:"200px"
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    height: "200px"
                 }}></div>
                 <p>{this.props.title}</p>
                 <p>{this.props.subtitle}</p>
-                <p>Author: {(this.props.author||[]).join(", ")}</p>
-                <p>Publisher: {this.props.publisher}</p>
+                <p>Author: {(this.props.author || []).join(", ")}</p>
+                {/* <p>Publisher: {this.props.publisher}</p> */}
                 <p>isbn: {this.props.isbn}</p>
                 <p>Published date: {this.props.publishedDate}</p>
-                <a href={"/forSaleBooks/"+this.props.volumeIdGG}>Find sellers</a><br /><br />
+                <a href={"/forSaleBooks/" + this.props.volumeIdGG}>Find sellers</a><br /><br />
+                {/* </div> */}
             </div>
         )
     }

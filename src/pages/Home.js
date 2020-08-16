@@ -4,6 +4,7 @@ import SellerBookBox from "../components/SellerBookBox"
 import { Redirect } from "react-router-dom";
 import FeedBox from "../components/FeedBox";
 import InfiniteScroll from "react-infinite-scroller";
+import SellPage from "./SellPage"
 
 
 const GET_POSTS = gql`
@@ -127,6 +128,7 @@ function Home(props) {
         // </Fragment>
         <Fragment>
 
+        <SellPage />
             <InfiniteScroll
                 loadMore={handleLoadMore}
                 hasMore={data.feed.isNotEmpty}

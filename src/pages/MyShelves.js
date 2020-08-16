@@ -8,7 +8,7 @@ function MyShelves() {
     return (
         <div>
 
-            <ul>
+            <ul className="inline-list shelf-nav" style={{paddingLeft:"0px"}}>
                 <li>
 
                     <Link to={`${match.path}/book-shelf`}>My Bookshelf</Link>
@@ -20,10 +20,10 @@ function MyShelves() {
             </ul>
             <Switch>
                 <Route exact path={`${match.path}/book-shelf`}>
-                    <ShelfPage key="book-shelf" inBookshelf={true}/>
+                    <ShelfPage key="book-shelf" inBookshelf={true} />
                 </Route>
                 <Route exact path={`${match.path}/store-shelf`}>
-                    <ShelfPage key="store-shelf" inBookshelf={false}/>
+                    <ShelfPage key="store-shelf" inBookshelf={false} />
                 </Route>
             </Switch>
         </div>

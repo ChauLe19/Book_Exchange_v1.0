@@ -1,3 +1,7 @@
+/* *{
+    margin:0;
+    padding: 0;
+} */
 .horizontal-center{
     text-align: center;
 }
@@ -7,10 +11,10 @@
     justify-content: space-around;
 }
 
-.header li{
+/* .header li{
     display: inline;
     margin:10px
-}
+} */
 
 .header form, .header ul{
     display: inline;
@@ -25,4 +29,29 @@ a:hover, a:active, a{
 
 .header a{
     color:white
+}
+
+.row{
+    margin:0px
+}
+
+.inline-list > li{
+    display: inline;
+    margin:10px
+}
+
+.shelf-nav{
+    display: flex;
+    justify-content: space-between;
+    margin:20px
+}
+
+.error{
+    color:red
+}
+
+
+.login-form li{
+    text-align: center;
+    display: block;
 }

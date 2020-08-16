@@ -42,7 +42,7 @@ function LoginForm(props) {
     }
     return (
         <div>
-            <ul>
+            <ul className="login-form">
 
                 <form className="auth-form" >
                     {!props.isLogin && <li>
@@ -88,7 +88,7 @@ function LoginForm(props) {
                                 }}> {props.isLogin ? "Login" : "Register"} </button>
                     </li>
                 </form>
-                <li>
+                <li className="error">
                             {message}
                 </li>
                 <li>
