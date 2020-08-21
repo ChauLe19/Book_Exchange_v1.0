@@ -23,8 +23,8 @@ class DBBookBox extends Component {
                 <p>{this.props.subtitle}</p>
                 <p>Author: {(this.props.author || []).join(", ")}</p>
                 {/* <p>Publisher: {this.props.publisher}</p> */}
-                <p>isbn: {this.props.isbn}</p>
-                <p>Published date: {this.props.publishedDate}</p>
+                {/* <p>isbn: {(this.props.isbn||[]).join(`, `)}</p> */}
+                {/* <p>Published date: {this.props.publishedDate}</p> */}
                 <a href={"/forSaleBooks/" + this.props.volumeIdGG}>Find sellers</a><br /><br />
                 {/* </div> */}
             </div>

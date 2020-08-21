@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react"
-
+import goodreads from "goodreads-api-node"
 import {
     // BrowserRouter as Router,
     // Switch,
@@ -13,7 +13,10 @@ import fetch from "node-fetch"
 import DBBookBox from "../components/DBBookBox"
 import { getAppropriateISBN } from "../fetchGGBooks"
 import InfiniteScroll from "react-infinite-scroller"
-
+const gr = goodreads({
+    key: 'aGq3pBvYR4i8kejiE6rA',
+    secret: '7WYqJmW6DUTW84k170CaG31VLSQ8ccgqRsYehx0aX4'
+});
 function SearchPage() {
     // const match = useRouteMatch();
     // const {searchKey} = useParams();
@@ -22,11 +25,15 @@ function SearchPage() {
     const query = new URLSearchParams(useLocation().search)
     const searchKey = query.get("search-key")
     const searchType = query.get("searchType")
+    const worksRegex = /(?<=\/works\/).+/
+    // let fullItems = []
     // const [startIndex,setStartIndex] = useState(0)
+    // const [fullItems, setFullItems] = useState([])
     const [loadMoreVars, setLoadMoreVars] = useState({
+        fullItems: [],
         hasMore: true,
         items: [],
-        startIndex: 0
+        page: 0
     })
     const items = loadMoreVars.items
     // console.log(items)
@@ -38,67 +45,60 @@ function SearchPage() {
     // })
     // console.log(params.toString())
     useEffect(() => {
-        // console.log("https://www.googleapis.com/books/v1/volumes?" + params)
-        // fetch("https://www.googleapis.com/books/v1/volumes?" + params)
+        // const paramObj = {}
+        // paramObj["title"] = searchKey;
+
+        // let params = new URLSearchParams(paramObj)
+        // fetch("http://openlibrary.org/search.json?" + params)
         //     .then(res => res.json())
         //     .then(data => {
-        //         console.log(data.items)
-        //         return setItems(data.items)
-        //     })
-        fetchBooks().then((items) => {
-            if (items[0] === undefined) setMessage("We found no books match")
-        })
 
+        //         const fullItems = data.docs;
+        //         console.log(loadMoreVars)
+        //         setLoadMoreVars({
+        //             fullItems,
+        //             hasMore: loadMoreVars.page < 10,
+        //             // hasMore: false,
+        //             items: items.concat(fullItems.slice(loadMoreVars.page * 10, loadMoreVars.page * 10 + 10)),
+        //             page: 1
+        //         })
+        //     }
+        //     )
+//         gr.getBooksByAuthor('175417')
+// .then(console.log);
+//         console.log("Something")
+
+        gr.searchBooks({q:"pikachu"})
+        .then((data)=>console.log(data))
+        // fetch("https://www.goodreads.com/search/index.xml?field=title&key=aGq3pBvYR4i8kejiE6rA&q=pikachu",{
+        //     mode:"no-cors"
+        // })
+        // .then(data => data.text())
+        // .then(data => console.log(data))
     }, [])
 
     async function fetchBooks() {
-        const params = new URLSearchParams({
-            q: `${searchType}:${searchKey}`,
-            orderBy: "relevance",
-            maxResults: 10,
-            startIndex: loadMoreVars.startIndex * 10,
-            printType:"books"
+        // const paramObj = {}
+        // paramObj["title"]= searchKey;
+
+        // let params= new URLSearchParams(paramObj)
+        // fetch("http://openlibrary.org/search.json?" + params)
+        // .then(res=>res.json())
+        // .then(data => 
+        //     {
+        //         // console.log(data.docs)
+        //     }
+        //     )
+        setLoadMoreVars({
+            fullItems: loadMoreVars.fullItems,
+            hasMore: loadMoreVars.page < 10,
+            items: loadMoreVars.items.concat(loadMoreVars.fullItems.slice(loadMoreVars.page * 10, loadMoreVars.page * 10 + 10)),
+            page: loadMoreVars.page + 1
         })
-        console.log(params.toString())
-        return fetch("https://www.googleapis.com/books/v1/volumes?" + params)
-            .then(res => res.json())
-            .then(data => {
-                // items.push(data.items)
-                const items = loadMoreVars.items.concat(data.items);
-                setLoadMoreVars({
-                    hasMore: data.items != undefined,
-                    items,
-                    startIndex: loadMoreVars.startIndex + 1
-                })
-                // console.log(items)
-                return items
-            })
-
+        return console.log(loadMoreVars.items)
     }
-    return (
-        // <div>
-        //     <h3>You searched for {searchType}: {searchKey}</h3>
-        //     <div className="row" style={{margin:"0px", textAlign:"center"}}>
-        //         {items ? items.map(item => {
-        //             const id = item.id
-        //             item = item.volumeInfo;
-        //             // console.log(item.industryIdentifiers[0].identifier)
-        //             return <DBBookBox
-        //                 key={id}
-        //                 title={item.title}
-        //                 subtitle={item.subtitle}
-        //                 imgHref={item.imageLinks ? item.imageLinks.thumbnail : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"}
-        //                 author={item.authors}
-        //                 publisher={item.publisher}
-        //                 isbn={getAppropriateISBN(item.industryIdentifiers)}
-        //                 publishedDate={item.publishedDate}
-        //                 volumeIdGG={id} />
-        //         }) :
-        //             "We found no books match."
-        //         }
-        //     </div>
 
-        // </div>
+    return (
         <InfiniteScroll
             className="row"
             style={{ textAlign: "center" }}
@@ -107,19 +107,20 @@ function SearchPage() {
             hasMore={loadMoreVars.hasMore}
             loader={<p key="loading">Loading...</p>}
         >
+            {/* {console.log(loadMoreVars)} */}
             {items.map(item => {
                 if (!item) return
-                const id = item.id
-                item = item.volumeInfo;
-                // console.log(item.industryIdentifiers[0].identifier)
+                const id = worksRegex.exec(item.key).toString()
+                // console.log(id)
+
                 return <DBBookBox
                     key={id}
                     title={item.title}
                     subtitle={item.subtitle}
-                    imgHref={item.imageLinks ? item.imageLinks.thumbnail : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"}
-                    author={item.authors}
+                    imgHref={item.cover_i ? `http://covers.openlibrary.org/b/ID/${item.cover_i}-M.jpg` : "https://islandpress.org/sites/default/files/default_book_cover_2015.jpg"}
+                    author={item.author_name}
                     publisher={item.publisher}
-                    isbn={getAppropriateISBN(item.industryIdentifiers)}
+                    isbn={item.isbn}
                     publishedDate={item.publishedDate}
                     volumeIdGG={id} />
             })
