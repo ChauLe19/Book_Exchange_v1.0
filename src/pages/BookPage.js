@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { useQuery, gql } from "@apollo/client"
 import {
     // BrowserRouter as Router,
     // Switch,
@@ -9,39 +8,28 @@ import {
     // useLocation
 } from "react-router-dom"
 import SellerBookBox from "../components/SellerBookBox"
+import axios from "axios"
 // import DBBookBox from "../components/DBBookBox"
-
-
-const GET_FOR_SALE_BOOKS = gql`
-    query getForSaleBooks($volumeIdGG:String){
-    searchForSaleBook(volumeIdGG:$volumeIdGG){
-        id
-        ownedBy{
-            username
-        }
-        dateForSale
-        price
-    }
-    }
-`
-
+//
 function BookPage() {
-    const { bookId } = useParams();
-    console.log(bookId)
-    const { data, loading, error } = useQuery(GET_FOR_SALE_BOOKS, {
-        variables: {
-            volumeIdGG: bookId
-        }
-    });
+    const { OL_ID } = useParams();
+    const [forSaleBooks, setForSaleBooks] = useState([])
 
-    if (loading) return (<p>LOADING... </p>)
-    if (error) return (<p>ERROR</p>);
-    console.log(data)
-    if (!data || data.searchForSaleBook.length === 0) return (<p>There is no one selling this book. Try with another edition of this book or try again at a different time.</p>);
-    console.log(data)
+    useEffect(() => {
+        const loadBooks = () => {
+            axios.get(`http://localhost:2000/forSale/${OL_ID}`)
+                .then(data => data.data)
+                .then(data => setForSaleBooks(data))
+        }
+        loadBooks()
+        return () => {setForSaleBooks([])}
+    },[])
+
+    if (!forSaleBooks || forSaleBooks.length === 0) return (<p>There is no one selling this book. Try with another edition of this book or try again at a different time.</p>);
+    // console.log(forSaleBooks)
     return (
         <div>   
-            {data.searchForSaleBook.map(elem => <SellerBookBox key={elem.id} sellerUsername={elem.ownedBy.username} price={elem.price} dateForSale={elem.dateForSale} />)}
+            {forSaleBooks.map(elem => <SellerBookBox key={elem.id} sellerUsername={elem.owner_username} price={elem.price} dateForSale={elem.date_for_sale} />)}
         </div>
 
     )

@@ -11,6 +11,9 @@ class Header extends Component {
     render() {
         return (
             <div className="header">
+                <h2 style={{color: "white"}}>
+                    Book Trader
+                </h2>
                 <SearchBar />
                 <ul className="inline-list">
                     <li>
@@ -21,7 +24,7 @@ class Header extends Component {
                     </li>) ||
                         <Fragment>
 
-                            (<li>
+                            <li>
                                 <Link to="#" onClick={e => { localStorage.clear(); this.props.handleLogin() }}>Logout</Link>
                             </li>
                             <li>

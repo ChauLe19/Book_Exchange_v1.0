@@ -1,9 +1,12 @@
-const { isTypeSystemExtensionNode } = require("graphql");
+const { default: axios } = require("axios");
 
-async function fetchBookById(volumeId) {
-    return await fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
+// Works ID
+async function fetchBookById(id) {
+    let book = await fetch(`https://openlibrary.org/works/${id}.json`)
         .then(res => res.json())
         .then(data => { if (data.error) throw data.error.message; return data })
+    book.author = await fetch(`https://openlibrary.org${book.authors[0].author.key}.json`).then(data => data.json()).then(data => data.name)
+    return book;
 }
 
 function getAppropriateISBN(industryIdentifiers) {

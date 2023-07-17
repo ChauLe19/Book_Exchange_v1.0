@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './global.css';
-import {
-    ApolloClient,
-    InMemoryCache,
-    useQuery,
-    gql,
-    ApolloProvider,
-    createHttpLink
-    /*NormalizedCacheObject*/
-} from '@apollo/client';
-import { setContext } from "@apollo/client/link/context"
 // import SearchPage from "./pages/SearchPage"
 import LoginPage from "./pages/LoginPage"
 import Home from "./pages/Home"
@@ -20,6 +10,7 @@ import SearchPage from "./pages/SearchPage"
 import Header from "./components/Header"
 import SellPage from "./pages/SellPage"
 import MyShelves from "./pages/MyShelves"
+import axios from 'axios';
 import {
     BrowserRouter as Router,
     Switch,
@@ -28,72 +19,55 @@ import {
 } from "react-router-dom"
 
 
-const httpLink = createHttpLink({
-    uri: 'http://localhost:2000/',
-    credentials: "same-origin",
-})
-
-const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem("token");
-    return {
-        headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : ""
-        }
-    }
-})
-const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache()
-});
-
 
 
 class App extends Component {
     constructor() {
         super()
+        const token = localStorage.getItem("token");
         this.state = {
-            authToken: localStorage.getItem("token")
+            authToken: token
         }
+        axios.defaults.headers.common['authorization'] = token ? `Bearer ${token}` : ""
         this.handleLogin = this.handleLogin.bind(this)
     }
-    handleLogin(){
+    handleLogin() {
+        const token = localStorage.getItem("token");
         this.setState({
-            authToken:localStorage.getItem("token")
+            authToken: token
         })
+        axios.defaults.headers.common['authorization'] = token ? `Bearer ${token}` : ""
+
         window.location.reload()
     }
     render() {
 
         return (
             <Router>
-                <ApolloProvider client={client}>
-                    
-                    <Header isLogin={this.state.authToken} handleLogin={this.handleLogin}/>
-                    <Switch>
 
-                        <Route path="/search">
-                            <h2>SearchPage</h2>
-                            <SearchPage />
-                        </Route>
-                        <Route exact path="/forSaleBooks/:bookId">
-                            <h2>Book Page</h2>
-                            <BookPage />
-                        </Route>
-                        <Route path="/my">
-                            <h2>My shelves</h2>
-                            <MyShelves />
-                        </Route>
-                        <Route path="/book/isbn">
-                            <h2>Book Info</h2>
-                            <BookInfo />
-                        </Route>
-                        <Route exact path="/login" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
-                        <Route exact path="/user/sell" render={()=><SellPage />}/>
-                        <Route exact path="/register" render={(props)=><LoginPage handleLogin={this.handleLogin} props={props}/>}/>
-                        <Route exact path="/" render={(props)=><Home history={props.history}/>}/>
-                    </Switch>
-                </ApolloProvider>
+                <Header isLogin={this.state.authToken} handleLogin={this.handleLogin} />
+                <Switch>
+
+                    <Route path="/search">
+                        <SearchPage />
+                    </Route>
+                    <Route path="/forSaleBooks/:OL_ID">
+                        <h2>Book Page</h2>
+                        <BookPage />
+                    </Route>
+                    <Route path="/my">
+                        <h2>My shelves</h2>
+                        <MyShelves />
+                    </Route>
+                    <Route path="/book/isbn">
+                        <h2>Book Info</h2>
+                        <BookInfo />
+                    </Route>
+                    <Route exact path="/login" render={(props) => <LoginPage handleLogin={this.handleLogin} props={props} />} />
+                    <Route exact path="/user/sell" render={() => <SellPage />} />
+                    <Route exact path="/register" render={(props) => <LoginPage handleLogin={this.handleLogin} props={props} />} />
+                    <Route exact path="/" render={(props) => <Home history={props.history} />} />
+                </Switch>
             </Router>
         )
     }

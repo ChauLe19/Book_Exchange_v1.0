@@ -1,37 +1,40 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const fetch = require("node-fetch")
-const { APP_SECRET, getUserId } = require('../utils');
-const { parse } = require('graphql');
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import fetch from 'node-fetch'
+import { getUserByEmail, createUser } from './User.js'
+const APP_SECRET = process.env.APP_SECRET
 
-async function isVolumeIdValid(volumeId){
-    return await fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
+
+async function isWorkValid(ol_id){
+    return await fetch(`https://openlibrary.org/works/${ol_id}`)
         .then(res => res.json())
         .then(data => {if(data.error) throw data.error.message; return true})
         .catch(err => {console.log(err); return false})
 }
 
-async function signup(root, args, context, info) {
-    const password = await bcrypt.hash(args.password, 10)
-    const user = await context.prisma.user.create({ data: { ...args, password } });
-    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+export async function signup(userInfo) {
+    const password = await bcrypt.hash(userInfo.password, 10)
+    const user = { ...userInfo, password }
+    await createUser(user); // TODO: check
+    const token = jwt.sign({ userId: user.user_id }, APP_SECRET);
     return {
         token,
         user
     }
 }
 
-async function login(root, args, context, info) {
-    const { password, ...user } = await context.prisma.user.findOne({ where: { email: args.email } })
-    if (!user) {
+export async function login(loginEmail, loginPassword) {
+    const { password, ...user } = await getUserByEmail(loginEmail) || {}
+    if (Object.keys(user).length == 0) {
         throw new Error("No such user found")
     }
 
-    const valid = await bcrypt.compare(args.password, password)
+    const valid = await bcrypt.compare(loginPassword, password)
     if (!valid) {
         throw new Error("Invalid password")
     }
-    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+    const token = jwt.sign({ userId: user.user_id }, APP_SECRET);
 
     return {
         token,
@@ -39,9 +42,9 @@ async function login(root, args, context, info) {
     }
 }
 
-async function createNewBook(root, args, context, info) {
+async function createNewBook(user_id, ol_id, price) {
     const userId = getUserId(context)
-    const isIdValid = await isVolumeIdValid(args.volumeIdGG)
+    const isIdValid = await isWorkValid(args.volumeIdGG)
     if(!isIdValid) throw new Error("Error has occured. This book doesn't exist.")
     // console.log(title)
     return context.prisma.book.create({
@@ -88,22 +91,7 @@ async function unsell(root, args, context, info) {
         }
     });
 }
-async function sellNewBook(root, args, context, info) {
-    // const title = await getTitleFromISBN(args.isbn)
-    const userId = getUserId(context)
-    return context.prisma.book.create({
-        data: {
-            // pictures
-            // title,
-            // isbn: args.isbn,
-            volumeIdGG:args.volumeIdGG,
-            forSale: true,
-            price: args.price,
-            dateForSale: new Date(),
-            ownedBy: { connect: { id: userId } }
-        }
-    });
-}
+
 async function buy(root, args, context, info) {
     const userId = getUserId(context);
     const book = await context.prisma.book.findOne({ where: { id: parseInt(args.bookId) }, select: { forSale: true, ownedBy: true, price: true } });
@@ -130,6 +118,7 @@ async function buy(root, args, context, info) {
         }
     })
 }
+
 async function deleteBook(root, args, context, info) {
     const userId = getUserId(context);
     const book = await context.prisma.book.findOne({ where: { id: parseInt(args.bookId) }, select: { forSale: true,id:true, ownedBy: true, price: true } });
@@ -189,18 +178,18 @@ async function updateUserInfo(root, args, context, info) {
 }
 
 
-module.exports = {
-    signup,
-    login,
-    createNewBook,
-    sellExistBook,
-    sellNewBook,
-    buy,
-    changePassword,
-    updateUserInfo,
-    unsell,
-    deleteBook
-}
+// module.exports = {
+//     signup,
+//     login,
+//     createNewBook,
+//     sellExistBook,
+//     sellNewBook,
+//     buy,
+//     changePassword,
+//     updateUserInfo,
+//     unsell,
+//     deleteBook
+// }
 
 // type Mutation{
 //     signup(email:String!, name: String!, password:String!):AuthPayload

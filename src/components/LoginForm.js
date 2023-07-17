@@ -1,35 +1,9 @@
 import React, { Component, useState } from "react"
 import { Redirect } from "react-router-dom"
-import {
-    useMutation,
-    gql
-} from "@apollo/client"
+import axios from 'axios'
 
-const LOGIN = gql`
-    mutation login($email:String!, $password:String!){
-        login(email:$email,password:$password){
-    token
-    user{
-      id
-      username
-    }
-    }
-}`
-
-const SIGNUP = gql`
-    mutation signup($email:String!, $username:String!, $password:String!){
-        signup(email:$email,username:$username,password:$password){
-            user{
-            username
-            }
-            token
-        }
-    }
-`
 
 function LoginForm(props) {
-    const [login, { data:loginData }] = useMutation(LOGIN)
-    const [signup, {data:signupData}] = useMutation(SIGNUP)
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -62,13 +36,16 @@ function LoginForm(props) {
                             props.isLogin ?
                                 e => {
                                     e.preventDefault()
-                                    login({
-                                        variables: {
-                                            email,
-                                            password
+                                    axios.post('http://localhost:2000/login', {
+                                        email, password
+                                    }, {
+                                        headers: {
+                                            "Access-Control-Allow-Origin": "*",
+                                            "Content-Type": "application/json"
                                         }
                                     }).then(data => {
-                                        localStorage.setItem("token", data.data.login.token)
+                                        console.log(data.data)
+                                        localStorage.setItem("token", data.data.token)
                                         setIsLoggedIn(true)
                                         props.handleLogin()
                                     })
@@ -77,11 +54,12 @@ function LoginForm(props) {
                                 } : e => {
                                     e.preventDefault()
                                     if(password!==repassword) throw new Error("Not same password")
-                                    signup({
-                                        variables:{
-                                            email,
-                                            username,
-                                            password
+                                    axios.post('http://localhost:2000/signup', {
+                                        email, password, username
+                                    },{
+                                        headers: {
+                                            "Access-Control-Allow-Origin": "*",
+                                            "Content-Type": "application/json"
                                         }
                                     }).then(data=> props.history.push("/login"))
 

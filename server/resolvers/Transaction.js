@@ -1,15 +1,6 @@
-function product(parent,args,context,info){
-    return context.prisma.transaction.findOne({where:{id:parent.id}}).product()
-}
-function seller(parent,args,context,info){
-    return context.prisma.transaction.findOne({where:{id:parent.id}}).seller()
-}
-function buyer(parent,args,context,info){
-    return context.prisma.transaction.findOne({where:{id:parent.id}}).buyer()
-}
+import {getQuery} from '../database.js'
 
-module.exports = {
-    product,
-    seller,
-    buyer
+export async function addTransaction(buyer_id, seller_id, book_id) {
+    // owned by is actually the person who is signed in
+    return getQuery(`INSERT INTO transactions (buyer_id, seller_id, book_id) VALUES (${buyer_id}, '${seller_id}', ${book_id});`)
 }
