@@ -1,9 +1,6 @@
 import 'dotenv/config.js'
 import express from 'express'
 import cors from 'cors'
-import passport from 'passport'
-import session from 'express-session'
-import MySQLStore from 'express-mysql-session'
 import bodyParser from 'body-parser'
 import {
   getBooksOwnedBy,
