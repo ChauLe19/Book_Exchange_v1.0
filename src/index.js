@@ -17,8 +17,13 @@ import {
     Route,
     Link
 } from "react-router-dom"
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
-
+const theme = createTheme({
+    status: {
+        danger: '#e53e3e',
+      }
+  });
 
 
 class App extends Component {
@@ -43,6 +48,8 @@ class App extends Component {
     render() {
 
         return (
+        <ThemeProvider theme={theme}>
+
             <Router>
 
                 <Header isLogin={this.state.authToken} handleLogin={this.handleLogin} />
@@ -52,11 +59,9 @@ class App extends Component {
                         <SearchPage />
                     </Route>
                     <Route path="/forSaleBooks/:OL_ID">
-                        <h2>Book Page</h2>
                         <BookPage />
                     </Route>
                     <Route path="/my">
-                        <h2>My shelves</h2>
                         <MyShelves />
                     </Route>
                     <Route path="/book/isbn">
@@ -69,6 +74,7 @@ class App extends Component {
                     <Route exact path="/" render={(props) => <Home history={props.history} />} />
                 </Switch>
             </Router>
+        </ThemeProvider>
         )
     }
 }

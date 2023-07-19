@@ -3,3 +3,5 @@ prisma/migrations
 prisma/file.db
 .vscode
 cascading-deletes-demo
+package-lock.json
+yarn.lock

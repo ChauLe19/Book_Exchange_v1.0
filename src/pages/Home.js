@@ -24,23 +24,27 @@ function Home(props) {
 
     return (
 
-        <div style={{display: "grid", gap: "1rem", boxSizing: "border-box", padding: "1rem", gridTemplateColumns: "repeat(5,1fr)"}}>
+        <div style={{backgroundColor: "rgb(25, 42, 86)", flexGrow: 2}}>
 
-            {/* <InfiniteScroll
+            <div style={{ width: "90%", margin: "auto", display: "grid", gap: "1rem", boxSizing: "border-box", padding: "1rem", gridTemplateColumns: "repeat(4,1fr)" }}>
+
+                {/* <InfiniteScroll
                 loadMore={handleLoadMore}
                 hasMore={data.feed.isNotEmpty}
                 loader={<p key="loading">Loading...</p>}> */}
-            {data.map(elem => <FeedBox key={elem.book_id}
-                bookId={elem.book_id}
-                ol_id={elem.ol_id}
-                sellerUsername={elem.owner_username}
-                price={elem.price}
-                dateForSale={elem.date_for_sale}
-                buyBook={buyBook}
-            />
-            )}
-            {/* </InfiniteScroll> */}
-            {/* {!data.feed.isNotEmpty && <p>This is the end</p>} */}
+                {data.map(elem => <FeedBox key={elem.book_id}
+                    bookId={elem.book_id}
+                    ol_id={elem.ol_id}
+                    sellerUsername={elem.owner_username}
+                    price={elem.price}
+                    dateForSale={elem.date_for_sale}
+                    condition={elem.book_condition}
+                    buyBook={buyBook}
+                />
+                )}
+                {/* </InfiniteScroll> */}
+                {/* {!data.feed.isNotEmpty && <p>This is the end</p>} */}
+            </div>
         </div>
     );
 }

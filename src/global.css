@@ -2,6 +2,15 @@
     margin:0;
     padding: 0;
 } */
+    
+#root {
+    background-color: white;
+    display: flex;
+    /* min-height: 100vh; */
+    flex-direction: column;
+    height: 100vh;
+}
+
 .horizontal-center{
     text-align: center;
 }
@@ -9,6 +18,12 @@
 .header{
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    min-height: max-content;
+    align-items: center;
+    /* overflow: auto; */
 }
 
 /* .header li{
@@ -19,8 +34,13 @@
 .header form, .header ul{
     display: inline;
 }
+
 .header{
-    background-color: darkblue;
+    /* background-color: white; */
+}
+
+.header {
+    color:#273c75;
 }
 
 a:hover, a:active, a{
@@ -28,11 +48,19 @@ a:hover, a:active, a{
 }
 
 .header a{
-    color:white
+    color: #273c75
 }
 
 .row{
     margin:0px
+}
+
+ul {
+    margin: 0;
+}
+
+a, input, li {
+    color: #273c75
 }
 
 .inline-list > li{
@@ -55,3 +83,78 @@ a:hover, a:active, a{
     text-align: center;
     display: block;
 }
+
+  .book {
+    position: relative;
+  }
+   
+  /* .book:before {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    border-bottom: 40px solid #F2E8D5;
+    border-right: 40px solid white;
+    box-shadow: -7px 7px 7px rgba(0,0,0,0.3);
+    display: block;
+    content: "";
+    cursor: pointer;
+  } */
+
+  .book .corner {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: 40px;
+    height: 40px;
+    border-bottom: 40px solid #F2E8D5;
+    border-right: 40px solid white;
+    box-shadow: -7px 7px 7px rgba(0,0,0,0.3);
+    display: block;
+    content: "";
+    cursor: pointer;
+  }
+  
+  .book .overlay {
+    display: none;
+    background-color: rgb(255,255,255,0.9);
+  }
+
+  .book.active .overlay {
+    display: flex;
+  }
+
+  .book.active .corner {
+    display: none;
+  }
+  
+  .popup-overlay {
+      backdrop-filter: blur(10px);
+  }
+  
+  .search-book-box:hover {
+    background-color: #EDEDED
+  }
+  
+  .search-book-box.active {
+    background-color: transparent;
+    color: #192a56;
+  }
+
+  .search-book-box.active {
+    background-color: #192a56;
+    color: white;
+  }
+
+  .search-book-box .add-to-shelf {
+    color: #192a56 !important;
+    border-color: #192a56 !important;
+  }
+
+  .search-book-box.active .add-to-shelf {
+    color: white !important;
+    border-color: white !important;
+  }
+  
+  .shelf-book .MuiSelect-select:focus {
+    background-color: transparent;
+  }

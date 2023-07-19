@@ -1,6 +1,7 @@
 import React from "react"
 import { useRouteMatch, Switch, Route, useLocation, Link } from "react-router-dom"
 import ShelfPage from "./ShelfPage"
+import { ArrowBack, ArrowBackIos, ArrowForwardIos } from "@material-ui/icons"
 
 function MyShelves() {
     const match = useRouteMatch()
@@ -8,14 +9,15 @@ function MyShelves() {
     return (
         <div>
 
-            <ul className="inline-list shelf-nav" style={{paddingLeft:"0px"}}>
+            <ul className="inline-list shelf-nav" style={{paddingLeft:"0px", alignItems: "center"}}>
                 <li>
 
-                    <Link to={`${match.path}/book-shelf`}>My Bookshelf</Link>
+                    <Link to={`${match.path}/book-shelf`}><ArrowBackIos />&nbsp;My Bookshelf</Link>
                 </li>
+                    <li style={{fontSize: "2rem"}}>My Shelves</li>
                 <li>
 
-                    <Link to={`${match.path}/store-shelf`}>My Storeshelf</Link>
+                    <Link to={`${match.path}/store-shelf`}>My Storeshelf&nbsp;<ArrowForwardIos /></Link>
                 </li>
             </ul>
             <Switch>

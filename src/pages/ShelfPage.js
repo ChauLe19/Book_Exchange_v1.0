@@ -59,10 +59,10 @@ function ShelfPage({ inBookshelf }) {
         // </div>
 
         // <div className="row">
-        <div>
+        <div className="row" style={{margin: "auto", width: "90%"}}>
             {
                 shelf.map(book =>
-                    <BookshelfBox key={book.book_id} inBookshelf={inBookshelf} bookId={book.book_id} date={book.date_created || book.date_for_sale} price={book.price} ol_id={book.ol_id} />
+                    <BookshelfBox key={book.book_id} inBookshelf={inBookshelf} bookId={book.book_id} date={book.date_created || book.date_for_sale} price={book.price} ol_id={book.ol_id} condition={book.book_condition} />
                 )}
         </div>
     )
