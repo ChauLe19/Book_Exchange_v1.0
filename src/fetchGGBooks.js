@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 // Works ID
-async function fetchBookById(id) {
+export async function fetchBookById(id) {
     let book = await fetch(`https://openlibrary.org/works/${id}.json`)
         .then(res => res.json())
         .then(data => { if (data.error) throw data.error.message; return data })
