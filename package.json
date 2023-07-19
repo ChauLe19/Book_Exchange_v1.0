@@ -44,7 +44,6 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.4.1",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.22",
     "xml-fetch": "^1.1.91"
