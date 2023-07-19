@@ -5,6 +5,7 @@ import axios from "axios"
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@material-ui/core"
 import { Close, Delete, MonetizationOn } from "@material-ui/icons"
 import { Fragment } from "react"
+import { server_url } from "../pages/global_vars";
 
 
 
@@ -110,7 +111,7 @@ class BookshelfBox extends Component {
                             }
                             <div style={{ flexGrow: 1 }}></div>
                             <Button variant="contained" color="primary" type="submit" style={{ backgroundColor: "#44bd32", margin: "0.25rem" }} onClick={() => {
-                                axios.post(this.props.inBookshelf ? `http://localhost:2000/book/${this.props.bookId}/sell` : `http://localhost:2000/book/${this.props.bookId}/unsell`, {
+                                axios.post(this.props.inBookshelf ? `${server_url}/book/${this.props.bookId}/sell` : `${server_url}/book/${this.props.bookId}/unsell`, {
                                     price: parseFloat(this.state.price),
                                     condition: this.state.condition
                                 }, {
@@ -122,7 +123,7 @@ class BookshelfBox extends Component {
                             }}><MonetizationOn />&nbsp;{this.props.inBookshelf ? "Sell" : "Unsell"}</Button>
 
                             <Button variant="contained" color="primary" style={{ backgroundColor: "#c23616", margin: "0.25rem" }} onClick={() => {
-                                axios.post(`http://localhost:2000/book/${this.props.bookId}/delete`, {
+                                axios.post(`${server_url}/book/${this.props.bookId}/delete`, {
                                     price: parseFloat(this.state.price),
                                     condition: this.state.condition
                                 }, {

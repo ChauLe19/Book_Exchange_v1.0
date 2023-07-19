@@ -8,6 +8,7 @@ import { Icon } from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import { server_url } from "../pages/global_vars";
 
 class DBBookBox extends Component {
     constructor(props) {
@@ -49,7 +50,7 @@ class DBBookBox extends Component {
                         <Popup open={this.state.open} closeOnDocumentClick={false} closeOnEscape={false} modal>
                             <SellPage ol_id={this.props.ol_id} imgHref={this.props.imgHref} title={this.props.title} author={this.props.author} close={this.closeModal}/>
                         </Popup>
-                        <Button className="add-to-shelf" variant="outlined" style={{ margin: "0.5rem", width: "100%" }} onClick={() => axios.post("http://localhost:2000/addBookToShelf", {
+                        <Button className="add-to-shelf" variant="outlined" style={{ margin: "0.5rem", width: "100%" }} onClick={() => axios.post(`${server_url}/addBookToShelf`, {
                             ol_id: this.props.ol_id
                         }, {
                             headers: {

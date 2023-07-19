@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react"
 import { Redirect } from "react-router-dom"
 import axios from 'axios'
+import { server_url } from "../pages/global_vars";
 
 
 function LoginForm(props) {
@@ -36,7 +37,7 @@ function LoginForm(props) {
                             props.isLogin ?
                                 e => {
                                     e.preventDefault()
-                                    axios.post('http://localhost:2000/login', {
+                                    axios.post(`${server_url}/login`, {
                                         email, password
                                     }, {
                                         headers: {
@@ -54,7 +55,7 @@ function LoginForm(props) {
                                 } : e => {
                                     e.preventDefault()
                                     if(password!==repassword) throw new Error("Not same password")
-                                    axios.post('http://localhost:2000/signup', {
+                                    axios.post(`${server_url}/signup`, {
                                         email, password, username
                                     },{
                                         headers: {

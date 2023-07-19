@@ -2,10 +2,11 @@ import { Button } from "@material-ui/core"
 import { ShoppingCart } from "@material-ui/icons"
 import axios from "axios"
 import React, { Component } from "react"
+import { server_url } from "../pages/global_vars";
 
 
 async function buyBook(bookId) {
-    return await axios.post(`http://localhost:2000/book/${bookId}/buy`)
+    return await axios.post(`${server_url}/book/${bookId}/buy`)
 }
 
 class SellerBookBox extends Component {

@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import axios from "axios"
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, StepIcon, TextField } from "@material-ui/core"
 import { CloseRounded, MonetizationOn } from "@material-ui/icons"
+import { server_url } from "../pages/global_vars";
 
 
 function SellPage(props) {
@@ -67,7 +68,7 @@ function SellPage(props) {
                     <Button variant="contained" color="primary" type="submit" style={{ backgroundColor: "#44bd32", width: "50%" }} onClick={e => {
                         e.preventDefault()
 
-                        axios.post("http://localhost:2000/sellNewBook", {
+                        axios.post(`${server_url}/sellNewBook`, {
                             ol_id: props.ol_id,
                             price: parseFloat(price),
                             condition: condition

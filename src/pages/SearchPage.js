@@ -8,6 +8,7 @@ import {
     // useRouteMatch,
     useLocation
 } from "react-router-dom"
+import { server_url } from "../pages/global_vars";
 
 import fetch from "node-fetch"
 import DBBookBox from "../components/DBBookBox"
@@ -39,7 +40,7 @@ function SearchPage() {
         if (currentOLID != undefined) {
 
             const loadBooks = () => {
-                axios.get(`http://localhost:2000/forSale/${currentOLID}`)
+                axios.get(`${server_url}/forSale/${currentOLID}`)
                     .then(data => data.data)
                     .then(data => setForSaleBooks(data))
             }

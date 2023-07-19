@@ -5,10 +5,11 @@ import FeedBox from "../components/FeedBox";
 import InfiniteScroll from "react-infinite-scroller";
 import SellPage from "./SellPage"
 import axios from "axios";
+import { server_url } from "../pages/global_vars";
 
 
 async function buyBook(bookId) {
-    return await axios.post(`http://localhost:2000/book/${bookId}/buy`)
+    return await axios.post(`${server_url}/book/${bookId}/buy`)
 }
 
 function Home(props) {
@@ -16,7 +17,7 @@ function Home(props) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:2000/feed', {
+        axios.get(`${server_url}/feed`, {
         })
             .then(data => data.data)
             .then(data => setData(data))

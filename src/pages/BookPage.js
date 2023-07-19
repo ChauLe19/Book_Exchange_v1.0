@@ -11,6 +11,7 @@ import SellerBookBox from "../components/SellerBookBox"
 import axios from "axios"
 import { fetchBookById } from "../fetchGGBooks";
 import { Rating } from "@material-ui/lab";
+import { server_url } from "../pages/global_vars";
 // import DBBookBox from "../components/DBBookBox"
 //
 function BookPage() {
@@ -20,7 +21,7 @@ function BookPage() {
 
     useEffect(() => {
         const loadBooks = () => {
-            axios.get(`http://localhost:2000/forSale/${OL_ID}`)
+            axios.get(`${server_url}/forSale/${OL_ID}`)
                 .then(data => data.data)
                 .then(data => setForSaleBooks(data))
         }

@@ -3,11 +3,12 @@ import BookshelfBox from "../components/BookshelfBox"
 import { useLocation } from 'react-router-dom'
 import InfiniteScroll from "react-infinite-scroller"
 import axios from "axios"
+import { server_url } from "../pages/global_vars";
 
 function ShelfPage({ inBookshelf }) {
     // const inBookshelf = props.inBookshelf
     // console.log(inBookshelf)
-    const shelfQueryLink = inBookshelf ? 'http://localhost:2000/my/bookshelf' : 'http://localhost:2000/my/storeshelf'
+    const shelfQueryLink = inBookshelf ? `${server_url}/my/bookshelf` : `${server_url}/my/storeshelf`
     const [shelf, setShelf] = useState([])
 
     useEffect(() => {
