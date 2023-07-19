@@ -1,9 +1,10 @@
 import mysql from 'mysql2'
 export const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'book_exchange'
+    host: 'sql9.freemysqlhosting.net',
+    user: 'sql9633777',
+    password: 'bMEAnTXpkL',
+    database: 'sql9633777',
+    port: 3306
 }).promise()
 
 export async function getQuery(query) {

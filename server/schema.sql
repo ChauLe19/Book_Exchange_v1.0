@@ -1,5 +1,5 @@
-CREATE DATABASE book_exchange;
-USE book_exchange;
+CREATE DATABASE book_trader;
+USE book_trader;
 
 CREATE TABLE users (
   user_id integer PRIMARY KEY AUTO_INCREMENT,
@@ -15,12 +15,12 @@ CREATE TABLE users (
 CREATE TABLE books (
   book_id INT PRIMARY KEY AUTO_INCREMENT,
   date_created TIMESTAMP NOT NULL DEFAULT NOW(),
-  date_for_sale TIMESTAMP DEFAULT NOW(),
+  date_for_sale TIMESTAMP,
   for_sale BOOLEAN NOT NULL DEFAULT 0,
   owned_by INT NOT NULL,
   ol_id VARCHAR(13),
   price DECIMAL (8,2) NOT NULL DEFAULT 0,
-  -- transactions integer, array of transaction book has been in
+  book_condition ENUM('New', 'Like-new', 'Very good', 'Good', 'Fair', 'Poor') NOT NULL DEFAULT 'Good',
   FOREIGN KEY (owned_by) REFERENCES users (user_id) ON DELETE CASCADE
 );
 

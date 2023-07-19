@@ -101,18 +101,17 @@ app.get('/my/storeshelf', authenticateUser, async (req, res) => {
 
 app.post('/addBookToShelf', authenticateUser, async (req, res) => {
   const book = req.body
-	console.log(book)
   res.json(await addBook(0, book.ol_id, req.userId))
 })
 
 app.post('/sellNewBook', authenticateUser, async (req, res) => {
   const book = req.body
-  res.json(await sellNewBook(book.ol_id, req.userId, book.price))
+  res.json(await sellNewBook(book.ol_id, req.userId, book.price || 0, book.condition))
 })
 
 app.post('/book/:bookId/sell', authenticateUser, async (req, res) => {
   const book = req.body
-  res.json(await sellExistBook(req.userId, req.params.bookId, book.price))
+  res.json(await sellExistBook(req.userId, req.params.bookId, book.price || 0, book.condition))
 })
 
 app.post('/book/:bookId/unsell', authenticateUser, async (req, res) => {
@@ -136,8 +135,15 @@ app.get('/user/:username', async (req, res) => {
   res.send(await getUserByUsername(req.params.username))
 })
 
-app.get('/forSale/:OL_ID', async (req, res) => {
-  res.send(await searchForSaleBooksWithOLID(req.params.OL_ID));
+app.get('/forSale/:OL_ID', authenticateUser, async (req, res) => {
+  if (req.userId)
+  {
+    res.send(await searchForSaleBooksWithOLID(req.userId, req.params.OL_ID));
+  }
+  else
+  {
+    res.status(401).send("Not authenticated")
+  }
 })
 
 app.get('/feed', async (req, res) => {
