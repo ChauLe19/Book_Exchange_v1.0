@@ -19,7 +19,6 @@ export async function searchForSaleBooks() {
 }
 
 export async function feed(userId) {
-    console.log(`SELECT books.*, users.username as owner_username from books INNER JOIN users ON books.owned_by = users.user_id WHERE for_sale = 1 AND owned_by <> ${userId} ORDER BY date_for_sale DESC;`)
     return getQuery(`SELECT books.*, users.username as owner_username from books INNER JOIN users ON books.owned_by = users.user_id WHERE for_sale = 1 AND owned_by <> ${userId} ORDER BY date_for_sale DESC;`)
 }
 
